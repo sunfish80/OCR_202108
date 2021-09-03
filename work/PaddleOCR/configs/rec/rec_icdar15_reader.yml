@@ -1,0 +1,14 @@
+TrainReader:
+  reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
+  num_workers: 1
+  img_set_dir: /
+  label_file_path: /home/aistudio/work/train.txt
+  
+EvalReader:
+  reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
+  img_set_dir: /
+  label_file_path: /home/aistudio/work/test.txt
+
+TestReader:
+  reader_function: ppocr.data.rec.dataset_traversal,SimpleReader
+  infer_img: /home/aistudio/data/data10879/test_images

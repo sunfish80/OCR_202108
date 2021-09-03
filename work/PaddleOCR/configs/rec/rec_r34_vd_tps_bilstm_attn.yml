@@ -1,0 +1,51 @@
+Global:
+  algorithm: RARE
+  use_gpu: true
+  epoch_num: 72
+  log_smooth_window: 20
+  print_batch_step: 100
+  save_model_dir: output/rec_RARE
+  save_epoch_step: 1
+  eval_batch_step: 1566
+  train_batch_size_per_card: 128
+  test_batch_size_per_card: 64
+  image_shape: [3, 32, 256]
+  max_text_length: 64
+  character_type: ch
+  loss_type: attention
+  reader_yml: ./configs/rec/rec_icdar15_reader.yml
+  pretrain_weights:
+  checkpoints:
+  save_inference_dir:
+  character_dict_path: /home/aistudio/data/data10879/label_list_torch.txt
+
+Architecture:
+  function: ppocr.modeling.architectures.rec_model,RecModel
+
+TPS:
+  function: ppocr.modeling.stns.tps,TPS
+  num_fiducial: 20
+  loc_lr: 0.1
+  model_name: large
+
+Backbone:
+  function: ppocr.modeling.backbones.rec_resnet_vd,ResNet
+  layers: 34
+ 
+Head:
+  function: ppocr.modeling.heads.rec_attention_head,AttentionPredict
+  encoder_type: rnn
+  SeqRNN:
+    hidden_size: 256
+  Attention:
+    decoder_size: 128
+    word_vector_dim: 128
+  
+Loss:
+  function: ppocr.modeling.losses.rec_attention_loss,AttentionLoss
+  
+Optimizer:
+  function: ppocr.optimizer,AdamDecay
+  base_lr: 0.001
+  beta1: 0.9
+  beta2: 0.999
